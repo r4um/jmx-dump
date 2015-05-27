@@ -4,7 +4,7 @@ Dumps JMX metrics on the command line.
 
 ## Installation
 
-Download dinaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
+Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 
 ## Usage
 
