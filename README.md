@@ -1,10 +1,10 @@
 # jmx-dump
 
-Dumps JMX metrics.
+Dumps JMX metrics on the command line.
 
 ## Installation
 
-Download from Releases
+Download dinaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 
 ## Usage
 
