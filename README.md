@@ -6,6 +6,8 @@ Dumps JMX metrics on the command line.
 
 Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 
+[ ![Download](https://api.bintray.com/packages/r4um/generic/jmx-dump/images/download.svg) ](https://bintray.com/r4um/generic/jmx-dump/_latestVersion)
+
 ## Usage
 
 ```shell
