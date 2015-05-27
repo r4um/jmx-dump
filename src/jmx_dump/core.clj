@@ -92,7 +92,7 @@
         (println-seq (jmx/attribute-names attrs-mbean)))
       ;; list all mbeans
       (when-let [mbeans? (options :mbeans)]
-        (println-seq jmx-mbean-names))
+        (println-seq (jmx-mbean-names)))
       ;; dump mbean in json
       (when-let [dump-mbean (options :dump)]
         (println (cc/generate-string (encode-jmx-map

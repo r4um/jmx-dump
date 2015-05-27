@@ -1,4 +1,4 @@
-(defproject jmx-dump "0.1.0"
+(defproject jmx-dump "0.1.1"
   :description "Dump JMX Metrics"
   :url "https://github.com/r4um/jmx-dump"
   :license {:name "Eclipse Public License"
