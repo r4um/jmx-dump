@@ -11,7 +11,7 @@ Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 ## Usage
 
 ```shell
-$ java -jar target/uberjar/jmx-dump-0.1.0-standalone.jar --help
+$ java -jar target/uberjar/jmx-dump-0.2.1-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
@@ -22,6 +22,8 @@ Usage: jmx-dump [options]
   -u, --jmx-url URL                     JMX URL
   -m, --mbeans                          List MBean names
   -a, --attrs MBEAN                     List attributes of mbean MBEAN
+  -o, --operations MBEAN                List operations on mbean MBEAN
+  -i, --invoke MBEAN OP                 Invoke operation OP on mbean MBEAN
   -d, --dump MBEAN                      Dump MBEAN mbean attributes and values in json
       --dump-all                        Dump all mbean attributes and values in json
       --help
