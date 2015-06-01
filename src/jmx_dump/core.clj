@@ -26,11 +26,13 @@
    ["-u" "--jmx-url URL" "JMX URL" :default nil]
    ["-m" "--mbeans" "List MBean names"]
    ["-a" "--attrs MBEAN" "List attributes of mbean MBEAN"]
+   ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
+   ["-i" "--invoke MBEAN OP" "Invoke operation OP on mbean MBEAN"]
    ["-d" "--dump MBEAN" "Dump MBEAN mbean attributes and values in json"]
    [nil "--dump-all" "Dump all mbean attributes and values in json"]
    [nil "--help"]])
 
-;; main cli options
+;; cli usage
 (defn usage [options-summary]
   (->> ["Dump JMX Metrics"
         ""
@@ -93,6 +95,15 @@
       ;; list all mbeans
       (when-let [mbeans? (options :mbeans)]
         (println-seq (jmx-mbean-names)))
+      ;; list all mbean operations
+      (when-let [mbean-ops (options :operations)]
+        (println-seq (jmx/operation-names mbean-ops)))
+      ;; invoke mbean operation
+      (when-let [invk-mbean (options :invoke)]
+        (let [op (first arguments)
+              args (next arguments)]
+          (apply jmx/invoke invk-mbean (keyword op) args)
+          (println "OK")))
       ;; dump mbean in json
       (when-let [dump-mbean (options :dump)]
         (println (cc/generate-string (encode-jmx-map
