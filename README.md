@@ -6,12 +6,13 @@ Dumps JMX metrics on the command line.
 
 Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 
-[ ![Download](https://api.bintray.com/packages/r4um/generic/jmx-dump/images/download.svg) ](https://bintray.com/r4um/generic/jmx-dump/_latestVersion)
+[![Dependencies Status](http://jarkeeper.com/r4um/jmx-dump/status.png)](http://jarkeeper.com/r4um/jmx-dump)
+[![Download](https://api.bintray.com/packages/r4um/generic/jmx-dump/images/download.svg) ](https://bintray.com/r4um/generic/jmx-dump/_latestVersion)
 
 ## Usage
 
 ```shell
-$ java -jar target/uberjar/jmx-dump-0.2.1-standalone.jar --help
+$ java -jar jmx-dump-0.3.2-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
@@ -19,7 +20,8 @@ Usage: jmx-dump [options]
   -h, --host HOST            localhost  JMX Host
   -p, --port PORT            3000       JMX Port
   -j, --jndi-path JNDI-PATH  jmxrmi     jndi-path to use
-  -u, --jmx-url URL                     JMX URL
+  -u, --url URL                         JMX URL
+  -l, --local VMID                      Fetch from local VM
   -m, --mbeans                          List MBean names
   -a, --attrs MBEAN                     List attributes of mbean MBEAN
   -o, --operations MBEAN                List operations on mbean MBEAN
