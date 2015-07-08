@@ -23,7 +23,8 @@
   [["-h" "--host HOST" "JMX Host" :default "localhost"]
    ["-p" "--port PORT" "JMX Port" :default 3000]
    ["-j" "--jndi-path JNDI-PATH" "jndi-path to use" :default "jmxrmi"]
-   ["-u" "--jmx-url URL" "JMX URL" :default nil]
+   ["-u" "--url URL" "JMX URL"]
+   ["-l" "--local VMID" "Fetch from local VM" :defaul nil]
    ["-m" "--mbeans" "List MBean names"]
    ["-a" "--attrs MBEAN" "List attributes of mbean MBEAN"]
    ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
@@ -78,6 +79,22 @@
 (defn jmx-mbean-names []
   (map #(.getCanonicalName %1) (jmx/mbean-names "*:*")))
 
+;; attach to local vm
+(defn vm-attach [vmd]
+  (let [tjp (format "jar:file:///%s/../lib/tools.jar!/" (System/getProperty "java.home"))
+        tju (java.net.URL. tjp)
+        cl (java.net.URLClassLoader. (into-array [tju]))
+        vm (.loadClass cl "com.sun.tools.attach.VirtualMachine")
+        vma (.getDeclaredMethod vm "attach"  (into-array [String]))]
+    (.invoke vma vm (into-array[vmd]))))
+
+;; fetch local JMX url given a local VM id
+(defn local-jmx-url [vmd]
+  (.getProperty
+   (.getAgentProperties
+    (vm-attach vmd))
+   "com.sun.management.jmxremote.localConnectorAddress"))
+
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]}
         (parse-opts args cli-options)]
@@ -88,7 +105,9 @@
       (exit 0 (usage summary))
       errors (exit 1 (error-msg errors)))
 
-    (jmx/with-connection options
+    (jmx/with-connection (if-let [local (options :local)]
+                           (assoc options :url (local-jmx-url local))
+                           options)
       ;; list a mbean's attributes
       (when-let [attrs-mbean (options :attrs)]
         (println-seq (jmx/attribute-names attrs-mbean)))
