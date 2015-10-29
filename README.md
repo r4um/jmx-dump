@@ -12,23 +12,24 @@ Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 ## Usage
 
 ```shell
-$ java -jar jmx-dump-0.3.2-standalone.jar --help
+$ java -jar jmx-dump-0.4.2-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
 
-  -h, --host HOST            localhost  JMX Host
-  -p, --port PORT            3000       JMX Port
-  -j, --jndi-path JNDI-PATH  jmxrmi     jndi-path to use
-  -u, --url URL                         JMX URL
-  -l, --local VMID                      Fetch from local VM
-  -m, --mbeans                          List MBean names
-  -a, --attrs MBEAN                     List attributes of mbean MBEAN
-  -o, --operations MBEAN                List operations on mbean MBEAN
-  -i, --invoke MBEAN OP                 Invoke operation OP on mbean MBEAN
-  -d, --dump MBEAN                      Dump MBEAN mbean attributes and values in json
-      --dump-all                        Dump all mbean attributes and values in json
-      --help
+-a, --attrs MBEAN                     List attributes of mbean MBEAN
+-c, --creds CREDS                     JMX Credentials, ROLE:PASS
+-d, --dump MBEAN                      Dump MBEAN mbean attributes and values in json
+--dump-all                        Dump all mbean attributes and values in json
+-h, --host HOST            localhost  JMX Host
+-i, --invoke MBEAN OP                 Invoke operation OP on mbean MBEAN
+-j, --jndi-path JNDI-PATH  jmxrmi     jndi-path to use
+-l, --local VMID                      Fetch from local VM
+-m, --mbeans                          List MBean names
+-o, --operations MBEAN                List operations on mbean MBEAN
+-p, --port PORT            3000       JMX Port
+-u, --url URL                         JMX URL
+    --help
 ```
 
 
