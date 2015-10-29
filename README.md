@@ -20,7 +20,7 @@ Usage: jmx-dump [options]
 -a, --attrs MBEAN                     List attributes of mbean MBEAN
 -c, --creds CREDS                     JMX Credentials, ROLE:PASS
 -d, --dump MBEAN                      Dump MBEAN mbean attributes and values in json
---dump-all                        Dump all mbean attributes and values in json
+    --dump-all                        Dump all mbean attributes and values in json
 -h, --host HOST            localhost  JMX Host
 -i, --invoke MBEAN OP                 Invoke operation OP on mbean MBEAN
 -j, --jndi-path JNDI-PATH  jmxrmi     jndi-path to use
