@@ -7,7 +7,8 @@
             [clojure.walk :as w])
   (:import (java.util Date Map List Set SimpleTimeZone UUID)
            (java.sql Timestamp)
-           (clojure.lang IPersistentCollection Keyword Ratio Symbol))
+           (clojure.lang IPersistentCollection Keyword Ratio Symbol)
+           (javax.management.remote JMXConnector))
   (:gen-class))
 
 (defn exit [status msg]
@@ -20,18 +21,19 @@
 
 ;; main cli options
 (def cli-options
-  [["-h" "--host HOST" "JMX Host" :default "localhost"]
-   ["-p" "--port PORT" "JMX Port" :default 3000]
-   ["-j" "--jndi-path JNDI-PATH" "jndi-path to use" :default "jmxrmi"]
-   ["-u" "--url URL" "JMX URL"]
-   ["-l" "--local VMID" "Fetch from local VM" :defaul nil]
-   ["-m" "--mbeans" "List MBean names"]
-   ["-a" "--attrs MBEAN" "List attributes of mbean MBEAN"]
-   ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
-   ["-i" "--invoke MBEAN OP" "Invoke operation OP on mbean MBEAN"]
+  [["-a" "--attrs MBEAN" "List attributes of mbean MBEAN"]
+   ["-c" "--creds CREDS" "JMX Credentials, ROLE:PASS"]
    ["-d" "--dump MBEAN" "Dump MBEAN mbean attributes and values in json"]
-   [nil "--dump-all" "Dump all mbean attributes and values in json"]
-   [nil "--help"]])
+   [nil  "--dump-all" "Dump all mbean attributes and values in json"]
+   ["-h" "--host HOST" "JMX Host" :default "localhost"]
+   ["-i" "--invoke MBEAN OP" "Invoke operation OP on mbean MBEAN"]
+   ["-j" "--jndi-path JNDI-PATH" "jndi-path to use" :default "jmxrmi"]
+   ["-l" "--local VMID" "Fetch from local VM"]
+   ["-m" "--mbeans" "List MBean names"]
+   ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
+   ["-p" "--port PORT" "JMX Port" :default 3000]
+   ["-u" "--url URL" "JMX URL"]
+   [nil  "--help"]])
 
 ;; cli usage
 (defn usage [options-summary]
@@ -95,6 +97,17 @@
     (vm-attach vmd))
    "com.sun.management.jmxremote.localConnectorAddress"))
 
+(defn build-credentials-env [creds]
+  (let [role_pass (string/split creds #":")]
+    {JMXConnector/CREDENTIALS (into-array role_pass)}))
+
+(defn process-opts [options]
+  (let [local (options :local)
+        creds (options :creds)]
+    (cond-> options
+      local (assoc :url (local-jmx-url local))
+      creds (assoc :environment (build-credentials-env creds)))))
+
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]}
         (parse-opts args cli-options)]
@@ -105,9 +118,7 @@
       (exit 0 (usage summary))
       errors (exit 1 (error-msg errors)))
 
-    (jmx/with-connection (if-let [local (options :local)]
-                           (assoc options :url (local-jmx-url local))
-                           options)
+    (jmx/with-connection (process-opts options)
       ;; list a mbean's attributes
       (when-let [attrs-mbean (options :attrs)]
         (println-seq (jmx/attribute-names attrs-mbean)))
