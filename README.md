@@ -12,7 +12,7 @@ Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 ## Usage
 
 ```shell
-$ java -jar jmx-dump-0.4.2-standalone.jar --help
+$ java -jar jmx-dump-0.5.2-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
