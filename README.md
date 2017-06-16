@@ -12,7 +12,7 @@ Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 ## Usage
 
 ```shell
-$ java -jar jmx-dump-0.5.2-standalone.jar --help
+$ java -jar jmx-dump-0.6.2-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
@@ -29,6 +29,7 @@ Usage: jmx-dump [options]
 -o, --operations MBEAN                List operations on mbean MBEAN
 -p, --port PORT            3000       JMX Port
 -u, --url URL                         JMX URL
+-v, --value MBEAN ATTR1 ATTR2...      Dump values of specific MBEAN attributes
     --help
 ```
 
