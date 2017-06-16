@@ -33,6 +33,7 @@
    ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
    ["-p" "--port PORT" "JMX Port" :default 3000]
    ["-u" "--url URL" "JMX URL"]
+   ["-v" "--value MBEAN ATTR1 ATTR2..." "Dump values of specific MBEAN attributes"]
    [nil  "--help"]])
 
 ;; cli usage
@@ -139,6 +140,11 @@
         (println (cc/generate-string (encode-jmx-map
                                       (jmx/mbean dump-mbean))
                                      {:pretty true})))
+      ;; dump mbean attr
+      (when-let [dump-mbean-attr (options :value)]
+        (let [attrs (if (< (count arguments) 2) (keyword (first arguments)) (map keyword arguments))]
+          (println (cc/generate-string (jmx/read dump-mbean-attr attrs)))))
+
       ;; dump all mbeans
       (when-let [dump-all? (options :dump-all)]
         (let [m (jmx-mbean-names)]
