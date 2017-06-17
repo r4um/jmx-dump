@@ -6,9 +6,9 @@ Dumps JMX metrics on the command line.
 
 ## Installation
 
-Dowload [latest release](https://github.com/r4um/jmx-dump/releases/latest)
+Download [latest release](https://github.com/r4um/jmx-dump/releases/latest).
 
-Older versions can be downlaoded from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
+Older versions can be downlaoded from [Bintray](https://bintray.com/r4um/generic/jmx-dump).
 
 ## Usage
 
