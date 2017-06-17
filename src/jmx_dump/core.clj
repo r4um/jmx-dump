@@ -38,13 +38,13 @@
 
 ;; cli usage
 (defn usage [options-summary]
-  (->> ["Dump JMX Metrics"
+  (string/join \newline
+        ["Dump JMX Metrics"
         ""
         "Usage: jmx-dump [options]"
         ""
         options-summary
-        ""]
-       (string/join \newline)))
+        ""]))
 
 (defn println-seq [args]
   (doseq [a args]
@@ -72,7 +72,7 @@
     (for [x (seq v)]
       (encode-jmx-data x))
     :else
-    (.toString v)))
+    (str v)))
 
 ;; walk the map and encode data
 (defn encode-jmx-map [m]
@@ -91,12 +91,21 @@
         vma (.getDeclaredMethod vm "attach"  (into-array [String]))]
     (.invoke vma vm (into-array[vmd]))))
 
+(defn local-jmx-addr [vma]
+  (.getProperty
+   (.getAgentProperties vma) "com.sun.management.jmxremote.localConnectorAddress"))
+
+(defn load-agent [vma]
+  (let [java-home (.getProperty (.getSystemProperties vma) "java.home")
+        agent-lib (string/join java.io.File/separator [java-home "lib" "management-agent.jar"])]
+        (.loadAgent vma agent-lib)))
+
 ;; fetch local JMX url given a local VM id
 (defn local-jmx-url [vmd]
-  (.getProperty
-   (.getAgentProperties
-    (vm-attach vmd))
-   "com.sun.management.jmxremote.localConnectorAddress"))
+  (let [vma (vm-attach vmd)
+        lurl (local-jmx-addr vma)]
+    (when (nil? lurl) (load-agent vma))
+    (local-jmx-addr vma)))
 
 (defn build-credentials-env [creds]
   (let [role_pass (string/split creds #":")]
