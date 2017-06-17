@@ -2,12 +2,13 @@
 
 Dumps JMX metrics on the command line.
 
+[![Dependencies Status](http://jarkeeper.com/r4um/jmx-dump/status.png)](http://jarkeeper.com/r4um/jmx-dump)
+
 ## Installation
 
-Download binaries from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
+Dowload [latest release](https://github.com/r4um/jmx-dump/releases/latest)
 
-[![Dependencies Status](http://jarkeeper.com/r4um/jmx-dump/status.png)](http://jarkeeper.com/r4um/jmx-dump)
-[![Download](https://api.bintray.com/packages/r4um/generic/jmx-dump/images/download.svg) ](https://bintray.com/r4um/generic/jmx-dump/_latestVersion)
+Older versions can be downlaoded from [Bintray](https://bintray.com/r4um/generic/jmx-dump)
 
 ## Usage
 
