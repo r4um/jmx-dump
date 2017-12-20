@@ -3,7 +3,8 @@ sudo: required
 language: clojure
 before_script:
   - sudo add-apt-repository ppa:duggan/bats --yes
-  - sudo apt-get install -qq coreutils bats openjdk-8-jdk
+  - sudo apt update -qq
+  - sudo apt-get install -qq coreutils bats
 script:
   - lein uberjar
   - bats --tap test
