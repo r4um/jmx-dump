@@ -2,7 +2,7 @@
 
 Dumps JMX metrics on the command line.
 
-[![Dependencies Status](http://jarkeeper.com/r4um/jmx-dump/status.png)](http://jarkeeper.com/r4um/jmx-dump)
+[![Dependencies Status](https://versions.deps.co/r4um/jmx-dump/status.svg)](https://versions.deps.co/r4um/jmx-dump)
 [![Build Status](https://travis-ci.org/r4um/jmx-dump.svg?branch=master)](https://travis-ci.org/r4um/jmx-dump)
 
 ## Installation
@@ -14,7 +14,7 @@ Older versions at [Bintray](https://bintray.com/r4um/generic/jmx-dump).
 ## Usage
 
 ```shell
-$ java -jar jmx-dump-0.7.3-standalone.jar --help
+$ java -jar jmx-dump-0.8.3-standalone.jar --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
