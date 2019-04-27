@@ -8,7 +8,9 @@
   (:import (java.util Date Map List Set SimpleTimeZone UUID)
            (java.sql Timestamp)
            (clojure.lang IPersistentCollection Keyword Ratio Symbol)
-           (javax.management.remote JMXConnector))
+           (javax.management.remote JMXConnector)
+           (org.apache.commons.lang3 SystemUtils)
+           (org.apache.commons.lang3 JavaVersion))
   (:gen-class))
 
 (defn exit [status msg]
@@ -33,7 +35,7 @@
    ["-o" "--operations MBEAN" "List operations on mbean MBEAN"]
    ["-p" "--port PORT" "JMX Port" :default 3000]
    ["-u" "--url URL" "JMX URL"]
-   ["-v" "--value MBEAN ATTR1 ATTR2..." "Dump values of specific MBEAN attributes"]
+   ["-v" "--value MBEAN ATTR1..." "Dump values of specific MBEAN attributes"]
    [nil  "--help"]])
 
 ;; cli usage
@@ -49,6 +51,9 @@
 (defn println-seq [args]
   (doseq [a args]
     (println (str a))))
+
+(defn is-atleast-java9 []
+  (SystemUtils/isJavaVersionAtLeast JavaVersion/JAVA_9))
 
 ;; encode JMX data, sequences and weird class names :/
 (defn encode-jmx-data [v]
@@ -82,8 +87,8 @@
 (defn jmx-mbean-names []
   (map #(.getCanonicalName %1) (jmx/mbean-names "*:*")))
 
-;; attach to local vm
-(defn vm-attach [vmd]
+;; pre java 9 we need to load the tools.jar
+(defn vm-attach-pre-java9 [vmd]
   (let [tjp (format "jar:file:///%s/../lib/tools.jar!/" (System/getProperty "java.home"))
         tju (java.net.URL. tjp)
         cl (java.net.URLClassLoader. (into-array [tju]))
@@ -91,14 +96,36 @@
         vma (.getDeclaredMethod vm "attach"  (into-array [String]))]
     (.invoke vma vm (into-array[vmd]))))
 
+;; post java 9 there is no tools.jar
+(defn vm-attach-post-java9 [vmd]
+  (let [cl (.getParent (.getClassLoader clojure.lang.RT))
+        vm (.loadClass cl "com.sun.tools.attach.VirtualMachine")
+        vma (.getDeclaredMethod vm "attach"  (into-array [String]))]
+    (.invoke vma vm (into-array[vmd]))))
+
+(defn vm-attach [vmd]
+(if (is-atleast-java9)
+  (vm-attach-post-java9 vmd)
+  (vm-attach-pre-java9 vmd)))
+
 (defn local-jmx-addr [vma]
   (.getProperty
    (.getAgentProperties vma) "com.sun.management.jmxremote.localConnectorAddress"))
 
-(defn load-agent [vma]
+;; pre java 9 management-agent.jar needs to be loaded
+(defn load-agent-pre-java9 [vma]
   (let [java-home (.getProperty (.getSystemProperties vma) "java.home")
         agent-lib (string/join java.io.File/separator [java-home "lib" "management-agent.jar"])]
-        (.loadAgent vma agent-lib)))
+    (.loadAgent vma agent-lib)))
+
+;; post java 9 there is no management-agent.jar
+(defn load-agent-post-java9 [vma]
+  (.startLocalManagementAgent vma))
+
+(defn load-agent [vma]
+(if (is-atleast-java9)
+  (load-agent-post-java9 vma)
+  (load-agent-pre-java9 vma)))
 
 ;; fetch local JMX url given a local VM id
 (defn local-jmx-url [vmd]
