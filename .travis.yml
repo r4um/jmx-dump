@@ -1,11 +1,12 @@
 ---
+dist: xenial
 sudo: required
 language: clojure
 jdk:
   - openjdk8
-  - openjdk12
+  - openjdk11
   - oraclejdk8
-  - oraclejdk12
+  - oraclejdk11
 before_script:
   - sudo add-apt-repository ppa:duggan/bats --yes
   - sudo apt update -qq
