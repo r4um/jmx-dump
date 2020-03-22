@@ -1,8 +1,8 @@
 ---
+dist: xenial
 sudo: required
 language: clojure
 jdk:
-  - openjdk6
   - openjdk8
   - openjdk9
   - openjdk10
@@ -15,6 +15,7 @@ jdk:
   - oraclejdk9
   - oraclejdk10
   - oraclejdk11
+  - oraclejdk12
   - oraclejdk13
   - oraclejdk14
 before_script:
