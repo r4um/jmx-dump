@@ -13,6 +13,6 @@
   :bin {:name          "jmx-dump"
         :jvm-opts [ "$JVM_OPTS" ]}
   :profiles {:uberjar {:aot :all}
-             :dev     {:dependencies [[clj-kondo "2020.02.15"]]
+             :dev     {:dependencies [[clj-kondo "2020.03.20"]]
                        :plugins      [[lein-binplus "0.6.6"]]}}
   :aliases {"clj-kondo" ["run" "-m" "clj-kondo.main" "--lint" "src"]})
