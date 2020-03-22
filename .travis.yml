@@ -1,21 +1,31 @@
----
 dist: xenial
 sudo: required
 language: clojure
 jdk:
-  - openjdk8
-  - openjdk9
-  - openjdk10
-  - openjdk11
-  - openjdk12
-  - openjdk13
-  - openjdk14
+- openjdk8
+- openjdk9
+- openjdk10
+- openjdk11
+- openjdk12
+- openjdk13
+- openjdk14
 before_script:
-  - sudo add-apt-repository ppa:duggan/bats --yes
-  - sudo apt update -qq
-  - sudo apt-get install -qq coreutils bats
+- sudo add-apt-repository ppa:duggan/bats --yes
+- sudo apt update -qq
+- sudo apt-get install -qq coreutils bats
 script:
-  - chmod 600 test/creds.*
-  - lein clj-kondo
-  - lein bin
-  - bats --tap test
+- chmod 600 test/creds.*
+- lein clj-kondo
+- lein bin
+- bats --tap test
+deploy:
+  provider: releases
+  api_key:
+    secure: JXODJQVD0XF5cFJvCILAGXJGS0u4P1lIVEtPm7Ck6FCsQuWWc1vC94iHR4piSmveqtPp+g3JAfvcyvfqy0g6WNJuZLaBXxKq/4q26/eSPgH21jUHi3H4P51K59LWG3f+ll5W4Pt11zpbsLlYJHx1x2z0fQK8stUJv74rHHsy96tHj7qdMwvsosaqYiRJwpuhZx68z35dPGZ/zICpLwpA2SwhbffG1lNZa03lc+DiG+zFVz0ka4Nae0rzg9XKPx4GpjbldUL5RVQuNYxjvvMqVaEYpT4+hP5I2aGGHYa45qrtjRnVOcP6EDoGtzuUajSkCEM5adEaRXsqZnwTgo4/gdN2brcBMUpE9+RLdIAryq98BduzRpFihNavQhSCIkWMCYqffK79ZIGTUPd/oMARmPJuFDH/jUIlEMI8LDl4nzQTAYp7L89Lq5GY7XM2iPDolX05XNzxmUucOtSclB/5af2t+dT74AR633vt+jYB6RhTQHQ2fc0t/RGA+MafL0GNjw0XFhVEZBDpIw4u+f+qGsHwddbCZqXujcsAX5leWcG41ft2OcdyrcLtIOx9tYRExGUjxtN4nNqx1DgfSHZgCXwFTZ374ii0FLq8k+y1dFjd2vgiy7c8Gojns8h9h1hI3R65ZzKk90/YEes8JhuZk/THbaOp/Al44Piiw2aUORY=
+  file:
+    - target/default/jmx-dump
+    - target/uberjar/*-standalone.jar
+  skip_cleanup: true
+  on:
+    tags: true
+    draft: true
