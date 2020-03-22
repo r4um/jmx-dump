@@ -7,9 +7,9 @@ Dumps JMX metrics on the command line.
 
 ## Installation
 
-Download stand alone binary or jar from [latest release](https://github.com/r4um/jmx-dump/releases/latest).
+Download standalone binary or jar from [latest release](https://github.com/r4um/jmx-dump/releases/latest).
 
-Avaiable also via homebrew tap
+Available also via homebrew tap
 
 ```shell
 brew tap r4um/homebrew
