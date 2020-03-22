@@ -29,3 +29,4 @@ deploy:
   on:
     tags: true
     draft: true
+    jdk: openjdk14
