@@ -13,8 +13,10 @@ Older versions at [Bintray](https://bintray.com/r4um/generic/jmx-dump).
 
 ## Usage
 
+Use the standalone binary or jar from the releases.
+
 ```shell
-$ java -jar jmx-dump-0.9.3-standalone.jar --help
+$ jmx-dump --help
 Dump JMX Metrics
 
 Usage: jmx-dump [options]
