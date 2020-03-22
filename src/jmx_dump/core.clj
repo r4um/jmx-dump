@@ -3,11 +3,10 @@
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.java.jmx :as jmx]
             [cheshire.core :as cc]
-            [cheshire.generate :as cg]
             [clojure.walk :as w])
-  (:import (java.util Date Map List Set SimpleTimeZone UUID)
+  (:import (java.util Date Map List Set UUID)
            (java.sql Timestamp)
-           (clojure.lang IPersistentCollection Keyword Ratio Symbol)
+           (clojure.lang IPersistentCollection Keyword Symbol)
            (javax.management.remote JMXConnector)
            (org.apache.commons.lang3 SystemUtils)
            (org.apache.commons.lang3 JavaVersion))
@@ -160,7 +159,7 @@
       (when-let [attrs-mbean (options :attrs)]
         (println-seq (jmx/attribute-names attrs-mbean)))
       ;; list all mbeans
-      (when-let [mbeans? (options :mbeans)]
+      (when-let [_mbeans? (options :mbeans)]
         (println-seq (jmx-mbean-names)))
       ;; list all mbean operations
       (when-let [mbean-ops (options :operations)]
@@ -182,7 +181,7 @@
           (println (cc/generate-string (jmx/read dump-mbean-attr attrs)))))
 
       ;; dump all mbeans
-      (when-let [dump-all? (options :dump-all)]
+      (when-let [_dump-all? (options :dump-all)]
         (let [m (jmx-mbean-names)]
           (println (cc/generate-string
                     (into {} (map
