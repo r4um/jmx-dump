@@ -21,5 +21,6 @@ before_script:
   - sudo apt-get install -qq coreutils bats
 script:
   - chmod 600 test/creds.*
-  - lein uberjar
+  - lein clj-kondo
+  - lein bin
   - bats --tap test
