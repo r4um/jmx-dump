@@ -1,6 +1,6 @@
 # jmx-dump
 
-Dumps JMX metrics on the command line.
+Dumps JMX metrics as JSON on the command line.
 
 [![Dependencies Status](https://versions.deps.co/r4um/jmx-dump/status.svg)](https://versions.deps.co/r4um/jmx-dump)
 [![Build Status](https://travis-ci.org/r4um/jmx-dump.svg?branch=master)](https://travis-ci.org/r4um/jmx-dump)
