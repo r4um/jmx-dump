@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk: [ '19' ]
+        jdk: [ '8', '11', '17', '19' ]
     name: Use JDK version ${{ matrix.jdk }}
     steps:
     - uses: actions/checkout@v3
@@ -21,9 +21,9 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.jdk }}
     - name: Install clojure tools
-      uses: DeLaGuardo/setup-clojure@10.1
+      uses: DeLaGuardo/setup-clojure@latest
       with:
-        lein: 2.9.10    
+        lein: latest
     - name: Cache clojure dependencies
       uses: actions/cache@v3
       with:
@@ -33,10 +33,10 @@ jobs:
           ~/.deps.clj
         key: cljdeps-${{ hashFiles('project.clj') }}
         restore-keys: cljdeps-
-    - name: Update apt cache
-      run: sudo apt update -qq
-    - name: Install coreutils and bats
-      run: sudo apt-get install -qq coreutils bats
+    - uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: coreutils bats
+        version: 0.1
     - name: Install dependencies
       run: lein deps
     - name: Run kondo
