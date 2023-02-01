@@ -1,0 +1,38 @@
+name: Clojure CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk: [ '8', '11', '16', '17', '18', '19' ]
+    name: Use JDK version ${{ matrix.Java }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: ${{ matrix.jdk }}
+    - name: Add duggan/bats PPA repo
+      run: sudo add-apt-repository ppa:duggan/bats --yes
+    - name: Update apt cache
+      run: sudo apt update -qq
+    - name: Install coreutils and bats
+      run: sudo apt-get install -qq coreutils bats
+    - name: Install dependencies
+      run: lein deps
+    - name: Run kondo
+      run: lein clj-kondo
+    - name: Build binaries
+      run: lein bin
+    - name: Set credential permissions for test run
+      run: chmod 600 test/creds.*
+    - name: Run tests
+      run: bats --tap test
