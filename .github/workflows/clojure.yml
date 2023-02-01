@@ -21,7 +21,7 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.jdk }}
     - name: Install clojure tools
-      uses: DeLaGuardo/setup-clojure@latest
+      uses: DeLaGuardo/setup-clojure@10.1
       with:
         lein: latest
     - name: Cache clojure dependencies
