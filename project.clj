@@ -9,10 +9,9 @@
                  [org.apache.commons/commons-lang3 "3.9"]
                  [cheshire "5.11.0"]]
   :main jmx-dump.core
-  :target-path "target/%s"
   :bin {:name          "jmx-dump"
         :jvm-opts [ "$JVM_OPTS" ]}
   :profiles {:uberjar {:aot :all}
-             :dev     {:dependencies [[clj-kondo "2022.06.22"]]
+             :dev     {:dependencies [[clj-kondo "2023.01.20"]]
                        :plugins      [[lein-binplus "0.6.6"]]}}
   :aliases {"clj-kondo" ["run" "-m" "clj-kondo.main" "--lint" "src"]})

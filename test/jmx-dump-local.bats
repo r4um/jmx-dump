@@ -2,7 +2,7 @@
 
 setup() {
  # use the latest built binary
- export JMX_DUMP=./target/default/jmx-dump
+ export JMX_DUMP=./target/jmx-dump
  # launch sleep helper
  (cd test && javac sleep.java)
  java -cp test/ sleep 10000 &
