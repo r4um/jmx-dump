@@ -20,8 +20,6 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: ${{ matrix.jdk }}
-    - name: Add duggan/bats PPA repo
-      run: sudo add-apt-repository ppa:duggan/bats --yes
     - name: Update apt cache
       run: sudo apt update -qq
     - name: Install coreutils and bats
