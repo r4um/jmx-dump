@@ -45,7 +45,5 @@ jobs:
       run: lein bin
     - name: Set credential permissions for test run
       run: chmod 600 test/creds.*
-    - name: Show the artifacts
-      run: ls target/default
     - name: Run tests
       run: bats --tap test
