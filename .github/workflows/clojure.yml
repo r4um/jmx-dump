@@ -20,6 +20,19 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: ${{ matrix.jdk }}
+    - name: Install clojure tools
+      uses: DeLaGuardo/setup-clojure@10.1
+      with:
+        lein: 2.9.10    
+    - name: Cache clojure dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-
     - name: Update apt cache
       run: sudo apt update -qq
     - name: Install coreutils and bats
