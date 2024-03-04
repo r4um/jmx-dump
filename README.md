@@ -42,6 +42,7 @@ Usage: jmx-dump [options]
   -p, --port PORT             3000       JMX Port
   -u, --url URL                          JMX URL
   -v, --value MBEAN ATTR1...             Dump values of specific MBEAN attributes
+  -s, --set-value MBEAN ATTR VALUE       Set value of specific MBEAN attribute
       --help
 ```
 

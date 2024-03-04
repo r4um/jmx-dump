@@ -35,6 +35,7 @@
    ["-p" "--port PORT" "JMX Port" :default 3000]
    ["-u" "--url URL" "JMX URL"]
    ["-v" "--value MBEAN ATTR1..." "Dump values of specific MBEAN attributes"]
+   ["-s" "--set-value MBEAN ATTR VALUE" "Set value of specific MBEAN attribute"]
    [nil  "--help"]])
 
 ;; cli usage
@@ -82,6 +83,19 @@
 (defn encode-jmx-map [m]
   (let [f (fn [[k v]] (if (map? v) [k v] [k (encode-jmx-data v)]))]
     (w/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
+
+(defn decode-jmx-value [mbean attr s]
+  (let [attr-info (jmx/attribute-info mbean attr)
+        attr-type (.getType attr-info)]
+    (cond
+      (= attr-type "long") (Long/parseLong s)
+      (= attr-type "float") (Float/parseFloat s)
+      (= attr-type "double") (Double/parseDouble s)
+      (= attr-type "int") (Integer/parseInt s)
+      (= attr-type "boolean") (Boolean/parseBoolean s)
+      (= attr-type "short") (Short/parseShort s)
+      (= attr-type "byte") (Byte/parseByte s)
+      :else (throw (IllegalArgumentException. (format "Unsupported attr type: %s" attr-type))))))
 
 (defn jmx-mbean-names []
   (map #(.getCanonicalName %1) (jmx/mbean-names "*:*")))
@@ -179,6 +193,13 @@
       (when-let [dump-mbean-attr (options :value)]
         (let [attrs (if (< (count arguments) 2) (keyword (first arguments)) (map keyword arguments))]
           (println (cc/generate-string (jmx/read dump-mbean-attr attrs)))))
+
+      ;; set mbean attr
+      (when-let [set-mbean-attr (options :set-value)]
+        (let [attr (keyword (first arguments))
+              value-str (second arguments)
+              value (decode-jmx-value set-mbean-attr attr value-str)]
+          (jmx/write! set-mbean-attr attr value)))
 
       ;; dump all mbeans
       (when-let [_dump-all? (options :dump-all)]
