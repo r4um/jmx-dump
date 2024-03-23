@@ -46,8 +46,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/uberjar/jmx-dump-${{ github.ref }}-standalone.jar
-        asset_name: jmx-dump-${{ github.ref }}-standalone.jar
+        asset_path: ./target/uberjar/jmx-dump-${{ github.ref_name }}-standalone.jar
+        asset_name: jmx-dump-${{ github.ref_name }}-standalone.jar
         asset_content_type: application/java-archive
         
     - name: Upload binaries
