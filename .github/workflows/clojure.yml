@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk: [ '8', '11', '17', '19' ]
+        jdk: [ '8', '11', '17', '21' ]
     name: Use JDK version ${{ matrix.jdk }}
     steps:
     - uses: actions/checkout@v3
