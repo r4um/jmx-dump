@@ -4,14 +4,9 @@ on:
   push:
     tags:
       - '*'
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v2
 
@@ -43,7 +38,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ steps.extract_version.outputs.version }}
+        release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
    
