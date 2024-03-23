@@ -25,6 +25,7 @@ jobs:
       run: |
         lein bin
         lein uberjar
+        find . -name jmx-dump
 
     - name: Extract version from tag
       id: extract_version
