@@ -32,6 +32,10 @@ jobs:
         lein bin
         lein uberjar
 
+    - name: Extract version from tag
+      id: extract_version
+      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
+    
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -39,14 +43,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        release_name: Release ${{ steps.extract_version.outputs.version }}
         draft: false
         prerelease: false
-    
-    - name: Extract version from tag
-      id: extract_version
-      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
-    
+   
     - name: Upload uberjar
       uses: actions/upload-release-asset@v1
       env:
