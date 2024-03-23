@@ -4,11 +4,15 @@ on:
   push:
     tags:
       - '*'
-
+  workflow_run:
+    workflows:
+      - "CI"
+    types:
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v2
 
@@ -39,15 +43,19 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-
+    
+    - name: Extract version from tag
+      id: extract_version
+      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
+    
     - name: Upload uberjar
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/uberjar/jmx-dump-${{ github.ref_name }}-standalone.jar
-        asset_name: jmx-dump-${{ github.ref_name }}-standalone.jar
+        asset_path: ./target/uberjar/jmx-dump-${{ steps.extract_version.outputs.version }}-standalone.jar
+        asset_name: jmx-dump-${{ steps.extract_version.outputs.version }}-standalone.jar
         asset_content_type: application/java-archive
         
     - name: Upload binaries
