@@ -45,3 +45,8 @@ teardown() {
    run java -jar $JMX_DUMP --host localhost --port $JMX_DUMP_TEST_PRG_JMX_PORT --invoke 'java.lang:type=Memory' gc
    [ "$status" -eq 0 ]
 }
+
+@test "should be able to set mbean attribute value given mbean, attribute, value and host/port" {
+   run java -jar $JMX_DUMP --host localhost --port $JMX_DUMP_TEST_PRG_JMX_PORT --set-value java.lang:type=ClassLoading Verbose true
+   [ "$status" -eq 0 ]
+}

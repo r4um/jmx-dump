@@ -42,3 +42,8 @@ teardown() {
    run java -jar $JMX_DUMP --local $JMX_DUMP_TEST_PRG_PID --invoke 'java.lang:type=Memory' gc
    [ "$status" -eq 0 ]
 }
+
+@test "should be able to set mbean attribute value given mbean, attribute, value and local id" {
+   run java -jar $JMX_DUMP --local $JMX_DUMP_TEST_PRG_PID --set-value java.lang:type=ClassLoading Verbose true
+   [ "$status" -eq 0 ]
+}
