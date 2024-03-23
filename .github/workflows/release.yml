@@ -1,4 +1,4 @@
-name: Create release and upload binaries on tag.
+name: Create release and upload binaries on tagging.
 
 on:
   push:
