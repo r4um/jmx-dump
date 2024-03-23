@@ -23,10 +23,9 @@ jobs:
 
     - name: Generate binaries
       run: |
-        lein bin
         lein uberjar
-        find . -name jmx-dump
-
+        lein bin
+        
     - name: Extract version from tag
       id: extract_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
