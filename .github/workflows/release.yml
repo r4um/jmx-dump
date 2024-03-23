@@ -1,4 +1,4 @@
-name: Create Release and Upload Binaries on Tag.
+name: Create release and uload binaries on tag.
 
 on:
   push:
@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up JDK 21
       uses: actions/setup-java@v2
@@ -16,11 +16,10 @@ jobs:
         java-version: '21'
         distribution: 'adopt'
 
-    - name: Install Leiningen
-      run: |
-        wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-        chmod +x lein
-        sudo mv lein /usr/local/bin/
+    - name: Install clojure tools
+      uses: DeLaGuardo/setup-clojure@10.1
+      with:
+        lein: latest
 
     - name: Generate binaries
       run: |
@@ -29,35 +28,14 @@ jobs:
 
     - name: Extract version from tag
       id: extract_version
-      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
+      run: echo "VERSION = ${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
     
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-   
-    - name: Upload uberjar
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/jmx-dump-${{ steps.extract_version.outputs.version }}-standalone.jar
-        asset_name: jmx-dump-${{ steps.extract_version.outputs.version }}-standalone.jar
-        asset_content_type: application/java-archive
-        
-    - name: Upload binaries
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/jmx-dump
-        asset_name: jmx-dump
-        asset_content_type: application/octet-stream
+        files: |
+          ./target/jmx-dump-${{ steps.extract_version.outputs.VERSION }}-standalone.jar
+          ./target/jmx-dump
