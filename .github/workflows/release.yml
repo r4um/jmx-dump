@@ -1,4 +1,4 @@
-name: Create release and uload binaries on tag.
+name: Create release and upload binaries on tag.
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
 
     - name: Extract version from tag
       id: extract_version
-      run: echo "VERSION = ${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
     
     - name: Create Release
       id: create_release
