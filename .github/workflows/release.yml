@@ -1,0 +1,61 @@
+name: Create Release and Upload Binaries on Tag.
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v2
+      with:
+        java-version: '21'
+        distribution: 'adopt'
+
+    - name: Install Leiningen
+      run: |
+        wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+        chmod +x lein
+        sudo mv lein /usr/local/bin/
+
+    - name: Generate binaries
+      run: |
+        lein bin
+        lein uberjar
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload uberjar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/uberjar/jmx-dump-${{ github.ref }}-standalone.jar
+        asset_name: jmx-dump-${{ github.ref }}-standalone.jar
+        asset_content_type: application/java-archive
+        
+    - name: Upload binaries
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/jmx-dump
+        asset_name: jmx-dump
+        asset_content_type: application/octet-stream
