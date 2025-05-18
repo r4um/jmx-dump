@@ -13,5 +13,6 @@
         :jvm-opts ["$JVM_OPTS"]}
   :profiles {:uberjar {:aot :all}
              :dev     {:dependencies [[clj-kondo "2024.08.29"]]
-                       :plugins      [[lein-binplus "0.6.8"]]}}
+                       :plugins      [[lein-binplus "0.6.8"]
+                                      [lein-ancient "1.0.0-RC3"]]}}
   :aliases {"clj-kondo" ["run" "-m" "clj-kondo.main" "--lint" "src"]})

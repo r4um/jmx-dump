@@ -2,7 +2,6 @@
 
 Dumps JMX metrics as JSON on the command line.
 
-[![Dependencies Status](https://versions.deps.co/r4um/jmx-dump/status.svg)](https://versions.deps.co/r4um/jmx-dump)
 [![Build Status](https://github.com/r4um/jmx-dump/actions/workflows/clojure.yml/badge.svg)](https://github.com/r4um/jmx-dump/actions/workflows/clojure.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/r4um/jmx-dump)](https://github.com/r4um/jmx-dump/releases/latest)
 
