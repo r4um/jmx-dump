@@ -46,4 +46,4 @@ jobs:
     - name: Set credential permissions for test run
       run: chmod 600 test/creds.*
     - name: Run tests
-      run: bats --tap test
+      run: bats --print-output-on-failure --tap test
